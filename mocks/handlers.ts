@@ -1,10 +1,12 @@
-import { rest, setupWorker } from "msw";
+import { rest } from "msw";
 import customers from "./data/customers";
 import products from "./data/products";
+import getConfig from "next/config";
 
-const BASE_URL = CONFIG.vars.base_graphql_endpoint;
+const { publicRuntimeConfig } = getConfig();
+const BASE_URL = publicRuntimeConfig.vars.base_graphql_endpoint;
 
-const handlers = [
+export const handlers = [
   rest.get(`${BASE_URL}/customers`, async (_, res, ctx) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
@@ -16,5 +18,3 @@ const handlers = [
     return res(ctx.status(200), ctx.json(products));
   }),
 ];
-
-export const worker = setupWorker(...handlers);

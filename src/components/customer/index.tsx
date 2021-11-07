@@ -1,4 +1,3 @@
-import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import List from "@mui/material/List";
@@ -7,10 +6,10 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListSubheader from "@mui/material/ListSubheader";
 
-import { actions, selectors } from "@features/customer/state";
+import { actions, selectors } from "@features/customer/slice";
 import { customerApi } from "@features/customer/api";
 
-import Loader from "@components/common/loader";
+import Loader from "../common/loader";
 
 const Customer = () => {
   const dispatch = useDispatch();
@@ -20,7 +19,7 @@ const Customer = () => {
   const currentCustomerId = useSelector(selectors.selectCurrentCustomerId);
 
   return (
-    <div id="customers">
+    <div id="customers" style={{ flexGrow: 1, margin: "0 1rem 0 0" }}>
       {isError && <h1>ERROR</h1>}
       {isLoading && <Loader />}
 

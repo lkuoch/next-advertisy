@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
-import { selectors } from "@features/priceSummary/state";
+import { selectors } from "@features/priceSummary/slice";
 
 const PriceSummary = () => {
   const basePrice = useSelector(selectors.selectBasePrice);
@@ -9,11 +9,11 @@ const PriceSummary = () => {
   const finalPrice = useSelector(selectors.selectFinalPrice);
 
   return (
-    <div id="price-summary">
-      <div className="price-summary-wrapper ui clearing segment">
+    <div id="price-summary" style={{ display: "flex", justifyContent: "flex-end" }}>
+      <div className="price-summary-wrapper ui clearing segment" style={{ width: "50%" }}>
         <h3 className="ui dividing header right aligned">Item Totals</h3>
 
-        <h4 id="total-price" className="ui header right aligned">
+        <h4 id="total-price" className="ui header right aligned" style={{ margin: 0 }}>
           ${basePrice.toFixed(2)}
         </h4>
 

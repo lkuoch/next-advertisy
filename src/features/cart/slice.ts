@@ -1,7 +1,7 @@
 import { createSlice, createEntityAdapter } from "@reduxjs/toolkit";
-import { listenerMiddleware } from "@features/common";
+import listenerMiddleware from "@app/store/listenerMiddleware";
 
-import { customerApi } from "@features/customer/api";
+import { customerApi } from "../customer/api";
 import { cartApi } from "./api";
 import type { Product } from "./types";
 
@@ -17,7 +17,7 @@ const cartAdapter = createEntityAdapter<Product>({
 });
 
 // Slice details
-export const { actions, name, reducer } = createSlice({
+const { actions, name, reducer } = createSlice({
   name: "cart",
   initialState: cartAdapter.getInitialState<State>({
     slice: {
@@ -33,14 +33,7 @@ export const { actions, name, reducer } = createSlice({
   },
 });
 
-listenerMiddleware.addListener(
-  customerApi.endpoints.fetchCustomers.matchFulfilled,
-  async (_, { dispatch }: { dispatch: AppDispatch }) => {
-    dispatch(cartApi.endpoints.fetchProducts.initiate());
-  }
-);
-
-export const selectors = (() => {
+const selectors = (() => {
   const adapterSelectors = cartAdapter.getSelectors(({ cart }: RootState) => cart);
   const selectHasLoaded = ({ cart }: RootState) => cart.slice.hasLoaded;
 
@@ -49,5 +42,15 @@ export const selectors = (() => {
       ...adapterSelectors,
     },
     selectHasLoaded,
-  };
+  } as const;
 })();
+
+listenerMiddleware.addListener(
+  customerApi.endpoints.fetchCustomers.matchFulfilled,
+  async (_, { dispatch }: { dispatch: AppDispatch }) => {
+    dispatch(cartApi.endpoints.fetchProducts.initiate());
+  },
+  { when: "before" }
+);
+
+export { actions, name, reducer, selectors };

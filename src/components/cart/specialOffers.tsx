@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
-import { selectors as customerSelectors } from "@features/customer/state";
+import { selectors as customerSelectors } from "@features/customer/slice";
 
 import type { Product } from "@features/cart/types";
 import { OfferType } from "@features/customer/types";
@@ -18,7 +18,7 @@ const SpecialOffers = ({ product: { id, retailPrice } }: Props) => {
     customerSelectors.selectOfferType(state, { offerType: OfferType.XYDeal, productId: id })
   );
 
-  const hasOffers = !!newPriceOffer || !!xyDealOffer;
+  const hasOffers = (newPriceOffer?.length ?? []) > 0 || (xyDealOffer?.length ?? []) > 0;
 
   return (
     <>

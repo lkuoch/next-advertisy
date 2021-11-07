@@ -1,4 +1,4 @@
-import { Offer, OfferType } from "@features/customer/types";
+import { Offer, OfferType } from "../customer/types";
 
 const calculateBasePrice = ({ qty, price }: { qty: number; price: number }) => qty * price;
 const calculateFinalPrice = ({ basePrice, discountPrice }: { basePrice: number; discountPrice: number }) =>

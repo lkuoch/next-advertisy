@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
-import { selectors as customerSelectors } from "@features/customer/state";
+import { selectors as customerSelectors } from "@features/customer/slice";
 import type { Product } from "@features/cart/types";
 import { OfferType } from "@features/customer/types";
 

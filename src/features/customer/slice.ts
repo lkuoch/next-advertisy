@@ -1,5 +1,6 @@
 import { createEntityAdapter, createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import setWith from "lodash/setWith";
+import getConfig from "next/config";
 
 import { customerApi } from "./api";
 import { Customer, CustomerSelection, OfferType } from "./types";
@@ -12,13 +13,15 @@ interface State {
   };
 }
 
+const { publicRuntimeConfig } = getConfig();
+
 const customerAdapter = createEntityAdapter<Customer>({
   selectId: (customer) => customer.id,
   sortComparer: (a, b) => a.name.localeCompare(b.name),
 });
 
 // Slice details
-export const { actions, name, reducer } = createSlice({
+const { actions, name, reducer } = createSlice({
   name: "customer",
   initialState: customerAdapter.getInitialState<State>({
     slice: {
@@ -53,7 +56,7 @@ export const { actions, name, reducer } = createSlice({
   },
 });
 
-export const selectors = (() => {
+const selectors = (() => {
   const adapterSelectors = customerAdapter.getSelectors(({ customer }: RootState) => customer);
 
   const selectCurrentCustomerId = ({ customer }: RootState) => customer.slice.currentCustomerId;
@@ -63,25 +66,25 @@ export const selectors = (() => {
   const selectCurrentCustomer = createSelector(
     [(state) => adapterSelectors.selectById(state, selectCurrentCustomerId(state))],
     (customer) => customer,
-    CONFIG.vars.selector_options
+    publicRuntimeConfig.vars.selector_options
   );
 
   const selectCurrentCustomerSelections = createSelector(
     [selectSelections, selectCurrentCustomerId],
     (selections, currentCustomerId) => selections?.[currentCustomerId],
-    CONFIG.vars.selector_options
+    publicRuntimeConfig.vars.selector_options
   );
 
   const selectCurrentCustomerProductOffers = createSelector(
     [selectCurrentCustomer, (_, productId: string) => productId],
     (customer, productId) => customer?.offers?.[productId] ?? [],
-    CONFIG.vars.selector_options
+    publicRuntimeConfig.vars.selector_options
   );
 
   const selectCurrentProductQuantity = createSelector(
     [selectCurrentCustomerSelections, (_, productId: string) => productId],
     (selections, productId) => selections?.[productId]?.qty ?? 0,
-    CONFIG.vars.selector_options
+    publicRuntimeConfig.vars.selector_options
   );
 
   const selectOfferType = createSelector(
@@ -91,7 +94,7 @@ export const selectors = (() => {
     ],
     (customer, { offerType, productId }) =>
       customer?.offers?.[productId]?.find(({ type }) => type === offerType)?.values,
-    CONFIG.vars.selector_options
+    publicRuntimeConfig.vars.selector_options
   );
 
   return {
@@ -105,3 +108,5 @@ export const selectors = (() => {
     selectOfferType,
   };
 })();
+
+export { actions, name, reducer, selectors };
