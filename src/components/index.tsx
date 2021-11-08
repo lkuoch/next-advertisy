@@ -1,4 +1,4 @@
-import React from "react";
+import Box from "@mui/material/Box";
 
 import Customer from "./customer";
 import Cart from "./cart";

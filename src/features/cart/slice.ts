@@ -45,12 +45,8 @@ const selectors = (() => {
   } as const;
 })();
 
-listenerMiddleware.addListener(
-  customerApi.endpoints.fetchCustomers.matchFulfilled,
-  async (_, { dispatch }: { dispatch: AppDispatch }) => {
-    dispatch(cartApi.endpoints.fetchProducts.initiate());
-  },
-  { when: "before" }
-);
+listenerMiddleware.addListener(customerApi.endpoints.fetchCustomers.matchFulfilled, async (_, { dispatch }) => {
+  dispatch(cartApi.endpoints.fetchProducts.initiate());
+});
 
 export { actions, name, reducer, selectors };

@@ -934,6 +934,11 @@
     redux-thunk "^2.4.0"
     reselect "^4.1.2"
 
+"@rtk-incubator/action-listener-middleware@0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@rtk-incubator/action-listener-middleware/-/action-listener-middleware-0.2.0.tgz#47e8ea4c97d5eb61238019dd40a67089843fd1de"
+  integrity sha512-uBLzH5M30ngxzdgCz5IGhoWryDxpPvDwe+9WdKOtLvhMOyG9LCTu8QKnfF8zDQ93vU+iNllUFZEVRY03nMkqIg==
+
 "@rushstack/eslint-patch@^1.0.6":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.1.0.tgz#7f698254aadf921e48dda8c0a6b304026b8a9323"
@@ -2182,9 +2187,9 @@ domexception@^2.0.1:
     webidl-conversions "^5.0.0"
 
 electron-to-chromium@^1.3.723, electron-to-chromium@^1.3.886:
-  version "1.3.889"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.889.tgz#0b7c6f7628559592d5406deda281788f37107790"
-  integrity sha512-suEUoPTD1mExjL9TdmH7cvEiWJVM2oEiAi+Y1p0QKxI2HcRlT44qDTP2c1aZmVwRemIPYOpxmV7CxQCOWcm4XQ==
+  version "1.3.890"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.890.tgz#e7143b659f73dc4d0512d1ae4baeb0fb9e7bc835"
+  integrity sha512-VWlVXSkv0cA/OOehrEyqjUTHwV8YXCPTfPvbtoeU2aHR21vI4Ejh5aC4AxUwOmbLbBgb6Gd3URZahoCxtBqCYQ==
 
 elliptic@^6.5.3:
   version "6.5.4"

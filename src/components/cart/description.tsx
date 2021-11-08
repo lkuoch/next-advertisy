@@ -1,5 +1,3 @@
-import React from "react";
-
 import SpecialOffers from "./specialOffers";
 import type { Product } from "@features/cart/types";
 

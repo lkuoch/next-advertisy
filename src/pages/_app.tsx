@@ -23,15 +23,5 @@ export default function App({ Component, pageProps }: AppProps) {
     })();
   }, []);
 
-  if (!isLoaded) {
-    return <h1>LOADING BIATCH</h1>;
-  }
-
-  if (isLoaded) {
-    return (
-      <Provider store={store}>
-        <Component {...pageProps} />
-      </Provider>
-    );
-  }
+  return <Provider store={store}>{isLoaded ? <Component {...pageProps} /> : null}</Provider>;
 }
