@@ -1,4 +1,10 @@
 import { createSelectorCreator, defaultMemoize } from "reselect";
-import isEqual from "lodash/isEqual";
+import getConfig from "next/config";
 
-export const createSelector = createSelectorCreator(defaultMemoize, isEqual);
+const { publicRuntimeConfig } = getConfig();
+
+const createSelector = createSelectorCreator(defaultMemoize, {
+  maxSize: publicRuntimeConfig.vars.selector_options,
+});
+
+export default createSelector;

@@ -1,6 +1,6 @@
-import { createEntityAdapter, createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createEntityAdapter, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSelector } from "@utils";
 import setWith from "lodash/setWith";
-import getConfig from "next/config";
 
 import { customerApi } from "./api";
 import { Customer, CustomerSelection, OfferType } from "./types";
@@ -12,8 +12,6 @@ interface State {
     selections: CustomerSelection;
   };
 }
-
-const { publicRuntimeConfig } = getConfig();
 
 const customerAdapter = createEntityAdapter<Customer>({
   selectId: (customer) => customer.id,
@@ -65,26 +63,22 @@ const selectors = (() => {
 
   const selectCurrentCustomer = createSelector(
     [(state) => adapterSelectors.selectById(state, selectCurrentCustomerId(state))],
-    (customer) => customer,
-    publicRuntimeConfig.vars.selectorOptions
+    (customer) => customer
   );
 
   const selectCurrentCustomerSelections = createSelector(
     [selectCustomerSelections, selectCurrentCustomerId],
-    (selections, currentCustomerId) => selections?.[currentCustomerId],
-    publicRuntimeConfig.vars.selectorOptions
+    (selections, currentCustomerId) => selections?.[currentCustomerId]
   );
 
   const selectCurrentCustomerProductOffers = createSelector(
     [selectCurrentCustomer, (_, productId: string) => productId],
-    (customer, productId) => customer?.offers?.[productId] ?? [],
-    publicRuntimeConfig.vars.selectorOptions
+    (customer, productId) => customer?.offers?.[productId] ?? []
   );
 
   const selectCurrentProductQuantity = createSelector(
     [selectCurrentCustomerSelections, (_, productId: string) => productId],
-    (selections, productId) => selections?.[productId]?.qty ?? 0,
-    publicRuntimeConfig.vars.selectorOptions
+    (selections, productId) => selections?.[productId]?.qty ?? 0
   );
 
   const selectOfferType = createSelector(
@@ -93,8 +87,7 @@ const selectors = (() => {
       (_, { offerType, productId }: { offerType: OfferType; productId: string }) => ({ offerType, productId }),
     ],
     (customer, { offerType, productId }) =>
-      customer?.offers?.[productId]?.find(({ type }) => type === offerType)?.values,
-    publicRuntimeConfig.vars.selectorOptions
+      customer?.offers?.[productId]?.find(({ type }) => type === offerType)?.values
   );
 
   return {

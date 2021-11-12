@@ -1,12 +1,10 @@
-import { createSelector, createSlice } from "@reduxjs/toolkit";
-import getConfig from "next/config";
+import { createSlice } from "@reduxjs/toolkit";
+import { createSelector } from "@utils";
 
 import { selectors as customerSelectors } from "../customer/slice";
 import { selectors as cartSelectors } from "../cart/slice";
 
 import { calculateDiscountSavings, calculateFinalPrice } from "./services";
-
-const { publicRuntimeConfig } = getConfig();
 
 // Slice details
 const { actions, name, reducer } = createSlice({
@@ -16,15 +14,12 @@ const { actions, name, reducer } = createSlice({
 });
 
 const selectors = (() => {
-  const selectBasePrice = createSelector(
-    [cartSelectors.adapter.selectAll, (state) => state],
-    (products, state) =>
-      products.reduce(
-        (subTotal, { id, retailPrice: price }) =>
-          (subTotal += customerSelectors.selectCurrentProductQuantity(state, id) * price),
-        0
-      ),
-    publicRuntimeConfig.vars.selectorOptions
+  const selectBasePrice = createSelector([cartSelectors.adapter.selectAll, (state) => state], (products, state) =>
+    products.reduce(
+      (subTotal, { id, retailPrice: price }) =>
+        (subTotal += customerSelectors.selectCurrentProductQuantity(state, id) * price),
+      0
+    )
   );
 
   const selectDiscountedSavings = createSelector(
@@ -43,14 +38,11 @@ const selectors = (() => {
               0
             )),
           0
-        ),
-    publicRuntimeConfig.vars.selectorOptions
+        )
   );
 
-  const selectFinalPrice = createSelector(
-    [selectBasePrice, selectDiscountedSavings],
-    (basePrice, discountPrice) => calculateFinalPrice({ basePrice, discountPrice }),
-    publicRuntimeConfig.vars.selectorOptions
+  const selectFinalPrice = createSelector([selectBasePrice, selectDiscountedSavings], (basePrice, discountPrice) =>
+    calculateFinalPrice({ basePrice, discountPrice })
   );
 
   return {

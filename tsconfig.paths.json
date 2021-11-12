@@ -7,7 +7,7 @@
       "@features/*": ["features/*"],
       "@pages/*": ["pages/*"],
       "@styles/*": ["styles/*"],
-      "@utils/*": ["utils/*"]
+      "@utils": ["utils/index.ts"]
     }
   }
 }
