@@ -2,9 +2,9 @@ import { useSelector } from "react-redux";
 
 import { selectors } from "@features/cart/slice";
 
-import Description from "./description";
-import Price from "./price";
-import UserSelection from "./userSelection";
+import Description from "./Description";
+import Price from "./Price";
+import UserSelection from "./UserSelection";
 
 const Table = () => {
   const products = useSelector(selectors.adapter.selectAll);

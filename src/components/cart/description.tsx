@@ -1,4 +1,4 @@
-import SpecialOffers from "./specialOffers";
+import SpecialOffers from "./SpecialOffers";
 import type { Product } from "@features/cart/types";
 
 interface Props {

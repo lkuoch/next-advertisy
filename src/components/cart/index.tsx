@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
 
 import { selectors as customerSelectors } from "@features/customer/slice";
-import Loader from "../common/loader";
-import Table from "./table";
+import Loader from "../common/Loader";
+import Table from "./Table";
 
 const Cart = () => {
   const hasLoaded = useSelector(customerSelectors.selectHasLoaded);

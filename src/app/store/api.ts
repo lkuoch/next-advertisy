@@ -5,7 +5,7 @@ const { publicRuntimeConfig } = getConfig();
 
 const api = createApi({
   reducerPath: "api",
-  baseQuery: fetchBaseQuery({ baseUrl: publicRuntimeConfig.vars.base_graphql_endpoint }),
+  baseQuery: fetchBaseQuery({ baseUrl: publicRuntimeConfig.vars.baseGraphQLEndpoint }),
   endpoints: () => ({}),
 });
 

@@ -24,7 +24,7 @@ const selectors = (() => {
           (subTotal += customerSelectors.selectCurrentProductQuantity(state, id) * price),
         0
       ),
-    publicRuntimeConfig.vars.selector_options
+    publicRuntimeConfig.vars.selectorOptions
   );
 
   const selectDiscountedSavings = createSelector(
@@ -44,13 +44,13 @@ const selectors = (() => {
             )),
           0
         ),
-    publicRuntimeConfig.vars.selector_options
+    publicRuntimeConfig.vars.selectorOptions
   );
 
   const selectFinalPrice = createSelector(
     [selectBasePrice, selectDiscountedSavings],
     (basePrice, discountPrice) => calculateFinalPrice({ basePrice, discountPrice }),
-    publicRuntimeConfig.vars.selector_options
+    publicRuntimeConfig.vars.selectorOptions
   );
 
   return {

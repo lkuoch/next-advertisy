@@ -10,10 +10,10 @@ module.exports = {
     features: {},
 
     vars: {
-      base_graphql_endpoint: "https://lkuoch.com",
-      selector_options: {
+      baseGraphQLEndpoint: "https://lkuoch.com",
+      selectorOptions: {
         memoizeOptions: {
-          maxSize: 256,
+          maxSize: 32,
         },
       },
     },

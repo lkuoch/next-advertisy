@@ -9,14 +9,14 @@ import ListSubheader from "@mui/material/ListSubheader";
 import { actions, selectors } from "@features/customer/slice";
 import { customerApi } from "@features/customer/api";
 
-import Loader from "../common/loader";
+import Loader from "../common/Loader";
 
 const Customer = () => {
   const dispatch = useDispatch();
   const { isError, isLoading, isSuccess } = customerApi.useFetchCustomersQuery();
 
   const entities = useSelector(selectors.adapter.selectAll);
-  const currentCustomerId = useSelector(selectors.selectCurrentCustomerId);
+  const currentCustomer = useSelector(selectors.selectCurrentCustomer);
 
   return (
     <div id="customers" style={{ flexGrow: 1, margin: "0 1rem 0 0" }}>
@@ -31,8 +31,8 @@ const Customer = () => {
           entities.map(({ id, name }) => (
             <ListItem
               key={id}
-              selected={id === currentCustomerId}
-              onClick={() => (id !== currentCustomerId ? dispatch(actions.updateCurrentCustomerId(id)) : null)}
+              selected={id === currentCustomer?.id}
+              onClick={() => (id !== currentCustomer?.id ? dispatch(actions.updateCurrentCustomer(id)) : null)}
             >
               <ListItemAvatar></ListItemAvatar>
               <ListItemText primary={name} />

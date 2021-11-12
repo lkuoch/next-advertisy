@@ -1,12 +1,18 @@
 import { Offer, OfferType } from "../customer/types";
 
-const calculateBasePrice = ({ qty, price }: { qty: number; price: number }) => qty * price;
-const calculateFinalPrice = ({ basePrice, discountPrice }: { basePrice: number; discountPrice: number }) =>
-  basePrice - discountPrice;
+interface Pricing {
+  readonly qty: number;
+  readonly price: number;
+  readonly basePrice: number;
+  readonly discountPrice: number;
+  readonly offer: Offer;
+}
 
-const calculateNewPrice = ({ offer, qty }: { offer: Offer; qty: number }) => offer.values[0] * qty;
+const calculateBasePrice = (pricing: Pick<Pricing, "price" | "qty">) => pricing.price * pricing.qty;
+const calculateNewPrice = (pricing: Pick<Pricing, "offer" | "qty">) => pricing.offer.values[0] * pricing.qty;
 
-const calculateXYDeal = ({ offer, qty, price }: { offer: Offer; qty: number; price: number }) => {
+const calculateXYDeal = (pricing: Pick<Pricing, "offer" | "qty" | "price">) => {
+  const { offer, qty, price } = pricing;
   const [x, y] = offer.values;
 
   // Normal price
@@ -20,10 +26,11 @@ const calculateXYDeal = ({ offer, qty, price }: { offer: Offer; qty: number; pri
   return quotient * y * price + remainder * price;
 };
 
-const calculateDiscountSavings = ({ qty, price, offer }: { qty: number; price: number; offer: Offer }) =>
+export const calculateDiscountSavings = ({ qty, price, offer }: Pick<Pricing, "offer" | "qty" | "price">) =>
   ({
     [OfferType.NewPrice]: calculateBasePrice({ qty, price }) - calculateNewPrice({ qty, offer }),
     [OfferType.XYDeal]: calculateBasePrice({ qty, price }) - calculateXYDeal({ qty, price, offer }),
   }[offer.type]);
 
-export { calculateDiscountSavings, calculateFinalPrice };
+export const calculateFinalPrice = (pricing: Pick<Pricing, "basePrice" | "discountPrice">) =>
+  pricing.basePrice - pricing.discountPrice;

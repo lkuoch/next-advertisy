@@ -4,7 +4,7 @@ import products from "./data/products";
 import getConfig from "next/config";
 
 const { publicRuntimeConfig } = getConfig();
-const BASE_URL = publicRuntimeConfig.vars.base_graphql_endpoint;
+const BASE_URL = publicRuntimeConfig.vars.baseGraphQLEndpoint;
 
 export const handlers = [
   rest.get(`${BASE_URL}/customers`, async (_, res, ctx) => {

@@ -42,7 +42,7 @@ const { actions, name, reducer } = createSlice({
       }
     },
 
-    updateCurrentCustomerId: (state, { payload }: PayloadAction<string>) => {
+    updateCurrentCustomer: (state, { payload }: PayloadAction<string>) => {
       state.slice.currentCustomerId = payload;
     },
   },
@@ -60,31 +60,31 @@ const selectors = (() => {
   const adapterSelectors = customerAdapter.getSelectors(({ customer }: RootState) => customer);
 
   const selectCurrentCustomerId = ({ customer }: RootState) => customer.slice.currentCustomerId;
-  const selectSelections = ({ customer }: RootState) => customer.slice.selections;
+  const selectCustomerSelections = ({ customer }: RootState) => customer.slice.selections;
   const selectHasLoaded = ({ customer }: RootState) => customer.slice.hasLoaded;
 
   const selectCurrentCustomer = createSelector(
     [(state) => adapterSelectors.selectById(state, selectCurrentCustomerId(state))],
     (customer) => customer,
-    publicRuntimeConfig.vars.selector_options
+    publicRuntimeConfig.vars.selectorOptions
   );
 
   const selectCurrentCustomerSelections = createSelector(
-    [selectSelections, selectCurrentCustomerId],
+    [selectCustomerSelections, selectCurrentCustomerId],
     (selections, currentCustomerId) => selections?.[currentCustomerId],
-    publicRuntimeConfig.vars.selector_options
+    publicRuntimeConfig.vars.selectorOptions
   );
 
   const selectCurrentCustomerProductOffers = createSelector(
     [selectCurrentCustomer, (_, productId: string) => productId],
     (customer, productId) => customer?.offers?.[productId] ?? [],
-    publicRuntimeConfig.vars.selector_options
+    publicRuntimeConfig.vars.selectorOptions
   );
 
   const selectCurrentProductQuantity = createSelector(
     [selectCurrentCustomerSelections, (_, productId: string) => productId],
     (selections, productId) => selections?.[productId]?.qty ?? 0,
-    publicRuntimeConfig.vars.selector_options
+    publicRuntimeConfig.vars.selectorOptions
   );
 
   const selectOfferType = createSelector(
@@ -94,14 +94,14 @@ const selectors = (() => {
     ],
     (customer, { offerType, productId }) =>
       customer?.offers?.[productId]?.find(({ type }) => type === offerType)?.values,
-    publicRuntimeConfig.vars.selector_options
+    publicRuntimeConfig.vars.selectorOptions
   );
 
   return {
     adapter: {
       ...adapterSelectors,
     },
-    selectCurrentCustomerId,
+    selectCurrentCustomer,
     selectHasLoaded,
     selectCurrentCustomerProductOffers,
     selectCurrentProductQuantity,
