@@ -1,5 +1,13 @@
 import { useSelector } from "react-redux";
 
+import { red, teal } from "@mui/material/colors";
+
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+
 import { selectors as customerSelectors } from "@features/customer/slice";
 
 import type { Product } from "@features/cart/types";
@@ -22,25 +30,29 @@ const SpecialOffers = ({ product: { id, retailPrice } }: Props) => {
   return (
     <>
       {hasOffers && (
-        <div className="special-offer-section">
-          <p>
-            <span className="special-offer-title ui red text">SPECIAL OFFER:</span>
-          </p>
+        <List>
+          <ListItem sx={{ color: red[500] }}>
+            <ListItemIcon>
+              <LocalOfferIcon />
+            </ListItemIcon>
+            <ListItemText primary="SPECIAL OFFER:" />
+          </ListItem>
 
-          <ul>
-            {newPriceOffer && (
-              <li>
-                <span className="special-offer ui blue text">{`We have slashed the price from ${retailPrice} -> ${newPriceOffer[0]}`}</span>
-              </li>
-            )}
+          {newPriceOffer && (
+            <ListItem sx={{ color: teal[500], pl: 4 }}>
+              <ListItemText primary={`We have slashed the price from ${retailPrice} -> ${newPriceOffer[0]}`} />
+            </ListItem>
+          )}
 
-            {xyDealOffer && (
-              <li>
-                <span className="special-offer ui blue text">{`Buy ${xyDealOffer[0]} for the price of ${xyDealOffer[1]}`}</span>
-              </li>
-            )}
-          </ul>
-        </div>
+          {xyDealOffer && (
+            <ListItem sx={{ color: teal[500], pl: 4 }}>
+              <ListItemText
+                primary={`Buy ${xyDealOffer[0]} for the price of ${xyDealOffer[1]}`}
+                sx={{ color: teal[500] }}
+              />
+            </ListItem>
+          )}
+        </List>
       )}
     </>
   );
