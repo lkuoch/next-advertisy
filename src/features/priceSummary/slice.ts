@@ -14,16 +14,16 @@ const { actions, name, reducer } = createSlice({
 });
 
 const selectors = (() => {
-  const selectBasePrice = createSelector([cartSelectors.adapter.selectAll, (state) => state], (products, state) =>
-    products.reduce(
+  const selectBasePrice = createSelector([cartSelectors.entity.selectAll, (state) => state], (products, state) => {
+    return products.reduce(
       (subTotal, { id, retailPrice: price }) =>
         (subTotal += customerSelectors.selectCurrentProductQuantity(state, id) * price),
       0
-    )
-  );
+    );
+  });
 
   const selectDiscountedSavings = createSelector(
-    [(state) => cartSelectors.adapter.selectAll(state), (state) => state],
+    [(state) => cartSelectors.entity.selectAll(state), (state) => state],
     (products, state) =>
       products
         .map(({ id, retailPrice: price }) => ({

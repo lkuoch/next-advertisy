@@ -15,7 +15,7 @@ const Cart = () => {
           <div className="content">My Cart</div>
         </h2>
 
-        {hasLoaded ? <Table /> : <Loader />}
+        <Table />
       </div>
     </div>
   );

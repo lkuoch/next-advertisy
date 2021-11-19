@@ -15,13 +15,12 @@ const Customer = () => {
   const dispatch = useDispatch();
   const { isError, isLoading, isSuccess } = customerApi.useFetchCustomersQuery();
 
-  const entities = useSelector(selectors.adapter.selectAll);
+  const entities = useSelector(selectors.entity.selectAll);
   const currentCustomer = useSelector(selectors.selectCurrentCustomer);
 
   return (
     <div id="customers" style={{ flexGrow: 1, margin: "0 1rem 0 0" }}>
       {isError && <h1>ERROR</h1>}
-      {isLoading && <Loader />}
 
       <List
         sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper", cursor: "pointer" }}

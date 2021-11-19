@@ -13,7 +13,7 @@ interface State {
   };
 }
 
-const customerAdapter = createEntityAdapter<Customer>({
+const entity = createEntityAdapter<Customer>({
   selectId: (customer) => customer.id,
   sortComparer: (a, b) => a.name.localeCompare(b.name),
 });
@@ -21,7 +21,7 @@ const customerAdapter = createEntityAdapter<Customer>({
 // Slice details
 const { actions, name, reducer } = createSlice({
   name: "customer",
-  initialState: customerAdapter.getInitialState<State>({
+  initialState: entity.getInitialState<State>({
     slice: {
       currentCustomerId: "",
       hasLoaded: false,
@@ -46,7 +46,7 @@ const { actions, name, reducer } = createSlice({
   },
   extraReducers: (builder) => {
     builder.addMatcher(customerApi.endpoints.fetchCustomers.matchFulfilled, (state, { payload }) => {
-      customerAdapter.addMany(state, payload);
+      entity.addMany(state, payload);
 
       state.slice.currentCustomerId = payload.find(Boolean)?.id ?? "";
       state.slice.hasLoaded = true;
@@ -55,14 +55,14 @@ const { actions, name, reducer } = createSlice({
 });
 
 const selectors = (() => {
-  const adapterSelectors = customerAdapter.getSelectors(({ customer }: RootState) => customer);
+  const entitySelectors = entity.getSelectors(({ customer }: RootState) => customer);
 
   const selectCurrentCustomerId = ({ customer }: RootState) => customer.slice.currentCustomerId;
   const selectCustomerSelections = ({ customer }: RootState) => customer.slice.selections;
   const selectHasLoaded = ({ customer }: RootState) => customer.slice.hasLoaded;
 
   const selectCurrentCustomer = createSelector(
-    [(state) => adapterSelectors.selectById(state, selectCurrentCustomerId(state))],
+    [(state) => entitySelectors.selectById(state, selectCurrentCustomerId(state))],
     (customer) => customer
   );
 
@@ -91,8 +91,8 @@ const selectors = (() => {
   );
 
   return {
-    adapter: {
-      ...adapterSelectors,
+    entity: {
+      ...entitySelectors,
     },
     selectCurrentCustomer,
     selectHasLoaded,
