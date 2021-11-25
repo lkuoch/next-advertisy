@@ -10,5 +10,5 @@ const { publicRuntimeConfig } = getConfig();
 export const store = configureStore({
   devTools: !publicRuntimeConfig.isProd,
   reducer: { [api.reducerPath]: api.reducer, ...reducers },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(api.middleware, listenerMiddleware),
+  middleware: (gDM) => gDM().concat(api.middleware, listenerMiddleware),
 });

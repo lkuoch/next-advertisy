@@ -1,4 +1,4 @@
-import { createEntityAdapter, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createEntityAdapter, createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 import { createSelector } from "@utils";
 import setWith from "lodash/setWith";
 
@@ -29,14 +29,14 @@ const { actions, name, reducer } = createSlice({
     },
   }),
   reducers: {
-    addToCart: (state, { payload: { productId, qty } }: PayloadAction<{ productId: string; qty: number }>) => {
+    addToCart: (state, { payload: { id, qty } }: PayloadAction<{ id: string; qty: number }>) => {
       if (state.slice.currentCustomerId) {
-        setWith(state, ["slice", "selections", state.slice.currentCustomerId, productId, "qty"], (qty += 1), Object);
+        setWith(state, ["slice", "selections", state.slice.currentCustomerId, id, "qty"], (qty += 1), Object);
       }
     },
-    removeFromCart: (state, { payload: { productId, qty } }: PayloadAction<{ productId: string; qty: number }>) => {
+    removeFromCart: (state, { payload: { id, qty } }: PayloadAction<{ id: string; qty: number }>) => {
       if (state.slice.currentCustomerId && qty > 0) {
-        setWith(state, ["slice", "selections", state.slice.currentCustomerId, productId, "qty"], (qty -= 1), Object);
+        setWith(state, ["slice", "selections", state.slice.currentCustomerId, id, "qty"], (qty -= 1), Object);
       }
     },
 
@@ -67,33 +67,33 @@ const selectors = (() => {
   );
 
   const selectCurrentCustomerSelections = createSelector(
-    [selectCustomerSelections, selectCurrentCustomerId],
-    (selections, currentCustomerId) => selections?.[currentCustomerId]
+    [(state) => ({ selections: selectCustomerSelections(state), currentCustomerId: selectCurrentCustomerId(state) })],
+    ({ currentCustomerId, selections }) => selections?.[currentCustomerId]
   );
 
   const selectCurrentCustomerProductOffers = createSelector(
-    [selectCurrentCustomer, (_, productId: string) => productId],
-    (customer, productId) => customer?.offers?.[productId] ?? []
+    [(state, id: string) => ({ customer: selectCurrentCustomer(state), id })],
+    ({ customer, id }) => customer?.offers?.[id] ?? []
   );
 
   const selectCurrentProductQuantity = createSelector(
-    [selectCurrentCustomerSelections, (_, productId: string) => productId],
-    (selections, productId) => selections?.[productId]?.qty ?? 0
+    [(state) => selectCurrentCustomerSelections(state), (_, id: string) => id],
+    (selections, id) => selections?.[id]?.qty ?? 0
   );
 
   const selectOfferType = createSelector(
     [
-      selectCurrentCustomer,
-      (_, { offerType, productId }: { offerType: OfferType; productId: string }) => ({ offerType, productId }),
+      (state) => selectCurrentCustomer(state),
+      (_, { offerType, id }: { offerType: OfferType; id: string }) => ({ offerType, id }),
     ],
-    (customer, { offerType, productId }) =>
-      customer?.offers?.[productId]?.find(({ type }) => type === offerType)?.values
+    (customer, { offerType, id }) => customer?.offers?.[id]?.find(({ type }) => type === offerType)?.values
   );
 
   return {
     entity: {
       ...entitySelectors,
     },
+    selectCurrentCustomerId,
     selectCurrentCustomer,
     selectHasLoaded,
     selectCurrentCustomerProductOffers,

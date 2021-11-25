@@ -14,17 +14,19 @@ const { actions, name, reducer } = createSlice({
 });
 
 const selectors = (() => {
-  const selectBasePrice = createSelector([cartSelectors.entity.selectAll, (state) => state], (products, state) => {
-    return products.reduce(
-      (subTotal, { id, retailPrice: price }) =>
-        (subTotal += customerSelectors.selectCurrentProductQuantity(state, id) * price),
-      0
-    );
-  });
+  const selectBasePrice = createSelector(
+    [(state) => ({ state, products: cartSelectors.entity.selectAll(state) })],
+    ({ state, products }) =>
+      products.reduce(
+        (subTotal, { id, retailPrice: price }) =>
+          (subTotal += customerSelectors.selectCurrentProductQuantity(state, id) * price),
+        0
+      )
+  );
 
   const selectDiscountedSavings = createSelector(
-    [(state) => cartSelectors.entity.selectAll(state), (state) => state],
-    (products, state) =>
+    [(state) => ({ state, products: cartSelectors.entity.selectAll(state) })],
+    ({ state, products }) =>
       products
         .map(({ id, retailPrice: price }) => ({
           price,
@@ -41,8 +43,9 @@ const selectors = (() => {
         )
   );
 
-  const selectFinalPrice = createSelector([selectBasePrice, selectDiscountedSavings], (basePrice, discountPrice) =>
-    calculateFinalPrice({ basePrice, discountPrice })
+  const selectFinalPrice = createSelector(
+    [(state) => ({ basePrice: selectBasePrice(state), discountPrice: selectDiscountedSavings(state) })],
+    ({ basePrice, discountPrice }) => calculateFinalPrice({ basePrice, discountPrice })
   );
 
   return {

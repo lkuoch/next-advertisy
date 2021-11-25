@@ -1,4 +1,7 @@
 import SpecialOffers from "./SpecialOffers";
+
+import Typography from "@mui/material/Typography";
+
 import type { Product } from "@features/cart/types";
 
 interface Props {
@@ -7,10 +10,13 @@ interface Props {
 
 const Description = ({ product }: Props) => {
   return (
-    <div className="description">
-      <p>{product.description}</p>
+    <>
+      <Typography variant="subtitle1" component="p">
+        {product.description}
+      </Typography>
+
       <SpecialOffers product={product} />
-    </div>
+    </>
   );
 };
 

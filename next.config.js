@@ -11,11 +11,6 @@ module.exports = {
 
     vars: {
       baseGraphQLEndpoint: "https://lkuoch.com",
-      selectorOptions: {
-        memoizeOptions: {
-          maxSize: 32,
-        },
-      },
     },
   },
 };

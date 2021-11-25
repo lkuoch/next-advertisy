@@ -19,10 +19,10 @@ interface Props {
 
 const SpecialOffers = ({ product: { id, retailPrice } }: Props) => {
   const newPriceOffer = useSelector((state) =>
-    customerSelectors.selectOfferType(state, { offerType: OfferType.NewPrice, productId: id })
+    customerSelectors.selectOfferType(state, { offerType: OfferType.NewPrice, id })
   );
   const xyDealOffer = useSelector((state) =>
-    customerSelectors.selectOfferType(state, { offerType: OfferType.XYDeal, productId: id })
+    customerSelectors.selectOfferType(state, { offerType: OfferType.XYDeal, id })
   );
 
   const hasOffers = (newPriceOffer?.length ?? []) > 0 || (xyDealOffer?.length ?? []) > 0;
