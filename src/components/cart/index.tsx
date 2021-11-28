@@ -1,23 +1,80 @@
 import { useSelector } from "react-redux";
 
-import { selectors as customerSelectors } from "@features/customer/slice";
-import Loader from "../common/Loader";
-import Table from "./Table";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import { styled } from "@mui/material/styles";
+
+import { selectors } from "@features/cart/slice";
+
+import { Heading, Loader } from "@components/common";
+import Description from "./description";
+import Price from "./price";
+import UserSelection from "./userSelection";
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
+  },
+}));
 
 const Cart = () => {
-  const hasLoaded = useSelector(customerSelectors.selectHasLoaded);
+  const products = useSelector(selectors.entity.selectAll);
+  const hasLoaded = useSelector(selectors.selectHasLoaded);
 
   return (
-    <div id="cart" style={{ marginBottom: "5rem" }}>
-      <div className="center-panel ui segment">
-        <h2 className="title ui header">
-          <i className="ui store icon" />
-          <div className="content">My Cart</div>
-        </h2>
+    <>
+      <Heading text="My Cart" />
 
-        <Table />
-      </div>
-    </div>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650, minHeight: 300 }} aria-label="simple table">
+          {hasLoaded ? (
+            <>
+              <TableHead>
+                <StyledTableRow>
+                  <StyledTableCell align="left">Name</StyledTableCell>
+                  <StyledTableCell align="left">Description</StyledTableCell>
+                  <StyledTableCell align="left">Retail Price</StyledTableCell>
+                  <StyledTableCell align="left">Quantity</StyledTableCell>
+                </StyledTableRow>
+              </TableHead>
+              <TableBody>
+                {products.map((product) => (
+                  <StyledTableRow key={product.name}>
+                    <StyledTableCell>{product.name}</StyledTableCell>
+                    <StyledTableCell>
+                      <Description product={product} />
+                    </StyledTableCell>
+                    <StyledTableCell>
+                      <Price product={product} />
+                    </StyledTableCell>
+                    <StyledTableCell>
+                      <UserSelection product={product} />
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))}
+              </TableBody>
+            </>
+          ) : (
+            <Loader />
+          )}
+        </Table>
+      </TableContainer>
+    </>
   );
 };
 

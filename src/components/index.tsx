@@ -18,7 +18,7 @@ import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 
-import Drawer from "./common/Drawer";
+import Drawer from "./common/drawer";
 import Customer from "./customer";
 import Cart from "./cart";
 import PriceSummary from "./priceSummary";

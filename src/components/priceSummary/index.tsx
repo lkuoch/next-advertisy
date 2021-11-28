@@ -1,36 +1,58 @@
 import { useSelector } from "react-redux";
+import Box from "@mui/material/Box";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import Typography from "@mui/material/Typography";
+import { useTheme } from "@mui/material/styles";
 
 import { selectors } from "@features/priceSummary/slice";
 
+import { Heading } from "@components/common";
+
 const PriceSummary = () => {
+  const theme = useTheme();
   const basePrice = useSelector(selectors.selectBasePrice);
   const discountPrice = useSelector(selectors.selectDiscountedSavings);
   const finalPrice = useSelector(selectors.selectFinalPrice);
 
   return (
-    <div id="price-summary" style={{ display: "flex", justifyContent: "flex-end" }}>
-      <div className="price-summary-wrapper ui clearing segment" style={{ width: "50%" }}>
-        <h3 className="ui dividing header right aligned">Item Totals</h3>
+    <Box sx={{ display: "flex", alignContent: "flex-end", justifyContent: "flex-end" }}>
+      <List>
+        <ListItem>
+          <Heading text="Item totals" />
+        </ListItem>
 
-        <h4 id="total-price" className="ui header right aligned" style={{ margin: 0 }}>
-          ${basePrice.toFixed(2)}
-        </h4>
+        <ListItem>
+          <Typography variant="h6" component="div">
+            ${basePrice.toFixed(2)}
+          </Typography>
+        </ListItem>
 
         {discountPrice > 0 && (
           <>
-            <h3 className="ui dividing header right aligned red">Your Savings</h3>
-            <h4 id="discount-price" className="ui header right aligned red">
-              ${discountPrice.toFixed(2)}
-            </h4>
+            <ListItem>
+              <Heading text="Your Savings" />
+            </ListItem>
 
-            <h2 className="ui dividing header right aligned">Final Price</h2>
-            <h3 id="discount-price" className="ui header right aligned">
-              ${finalPrice.toFixed(2)}
-            </h3>
+            <ListItem>
+              <Typography variant="h6" component="div" sx={{ color: theme.palette.error.main }}>
+                ${discountPrice.toFixed(2)}
+              </Typography>
+            </ListItem>
+
+            <ListItem>
+              <Heading text="Final Price" />
+            </ListItem>
+
+            <ListItem>
+              <Typography variant="h6" component="div" sx={{ color: theme.palette.success.main }}>
+                ${finalPrice.toFixed(2)}
+              </Typography>
+            </ListItem>
           </>
         )}
-      </div>
-    </div>
+      </List>
+    </Box>
   );
 };
 

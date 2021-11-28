@@ -1,4 +1,4 @@
-import SpecialOffers from "./SpecialOffers";
+import SpecialOffers from "./specialOffers";
 
 import Typography from "@mui/material/Typography";
 
